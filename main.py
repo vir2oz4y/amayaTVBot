@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from setting import botToken
-
+from User import  User
 
 
 class MyClient(discord.Client):
@@ -14,7 +14,8 @@ class MyClient(discord.Client):
     async def on_message(self, message):
         if message.author == client.user:
             return
-        print(message.author.id)
+        user = User.userFromMessage(message)
+        print(message.content)
 
 
 
