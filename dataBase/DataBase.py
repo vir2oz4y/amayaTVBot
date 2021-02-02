@@ -1,5 +1,5 @@
 import sqlite3
-
+from User import User
 
 class DataBase:
     databaseName = 'amaya.db'
@@ -31,6 +31,12 @@ class DataBase:
                                                                                                         tracker=user.tracker)
         self.cursor.execute(sql)
         self.connection.commit()
+
+    def getUser(self, userId):
+        sql = """select * from users where id = {id}""".format(id=userId)
+        self.cursor.execute(sql)
+        user = self.cursor.fetchone()
+        return user
 
 
 if __name__ == '__main__':

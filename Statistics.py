@@ -12,12 +12,14 @@ class CodStatistic:
         URL = self.userURL.format(name=user.battleNetName, tracker=user.tracker)
         response = requests.get(URL)
         try:
-            return response.json()
+            return response
         except:
             return 404
 
+    def getUserStatJson(self, user):
+        return self.getUserStatistics(user).json()
+
+
 
 if __name__ == '__main__':
-    cs = CodStatistic()
-    user = User([1, 'vir2oz', 21182])
-    print(cs.getUserStatistics(user))
+    pass
