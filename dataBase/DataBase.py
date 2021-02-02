@@ -1,5 +1,6 @@
 import sqlite3
 
+
 class DataBase:
     databaseName = 'amaya.db'
 
@@ -12,16 +13,25 @@ class DataBase:
 
     def createBD(self):
         sql = """CREATE TABLE users
-                  (id int, battleNetName text, tracker int)
+                  (id int primary key, battleNetName text, tracker int)
                """
         self.cursor.execute(sql)
 
     def addToBD(self, user):
-        sql="""insert into users values ({id}, {battleNetName}, {tracker})""".format(id=user.id,
-                                                                                     battleNetName=user.battleNetName,
-                                                                                     tracker=user.tracker)
+        sql = """insert into users values ({id}, '{battleNetName}', {tracker})""".format(id=user.id,
+                                                                                         battleNetName=user.battleNetName,
+                                                                                         tracker=user.tracker)
         self.cursor.execute(sql)
         self.connection.commit()
+
+    def changeIntoDB(self, user):
+        sql = """update users set battleNetName= '{battleNetName}',tracker={tracker} where id = {id}""".format(
+                                                                                                        id=user.id,
+                                                                                                        battleNetName=user.battleNetName,
+                                                                                                        tracker=user.tracker)
+        self.cursor.execute(sql)
+        self.connection.commit()
+
 
 if __name__ == '__main__':
     DB = DataBase()

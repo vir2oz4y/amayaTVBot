@@ -7,7 +7,7 @@ class User:
     @staticmethod
     def userFromMessage(message):
         discordId = message.author.id
-        battleNet = message.content.split('#')
+        battleNet = message.content.split(' ')[1].split('#')
         battleNetName = battleNet[0]
         tracker = battleNet[1]
         return User([discordId, battleNetName, tracker])
