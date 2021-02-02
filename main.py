@@ -1,16 +1,12 @@
 import discord
 from discord.ext import commands
-
 from setting import botToken
-from DataBase import DataBase
-from Statistic.Statistic import Statistic
+
 
 
 
 
 class MyClient(discord.Client):
-    db = DataBase()
-    statistic = Statistic()
     clients = commands.Bot(command_prefix='!')
 
     async def on_ready(self):
