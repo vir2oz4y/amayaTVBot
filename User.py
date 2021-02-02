@@ -3,6 +3,8 @@ class User:
         self.id = userArr[0]
         self.battleNetName = userArr[1]
         self.tracker = userArr[2]
+        self.fullname = self.battleNetName + "#" + str(self.tracker)
+        self.avatar_url = None
 
     @staticmethod
     def userFromMessage(message):

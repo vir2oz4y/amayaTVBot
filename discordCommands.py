@@ -1,6 +1,9 @@
 from Statistics import CodStatistic
 from dataBase.DataBase import DataBase
 from User import User
+from StatisticInfo.userInfo import Stats
+import datetime
+import discord
 import sqlite3
 
 class DiscordCommands:
@@ -39,12 +42,44 @@ class DiscordCommands:
         db = DataBase()
         userArr = db.getUser(message.author.id)
         user = User(userArr)
+        user.avatar_url = message.author.avatar_url
 
-        def wrapper(user):
+        def wrapper(user, message):
             codStat = CodStatistic()
             json = codStat.getUserStatJson(user)
-            return json
+            userStats = getUserStats(json)
+            return getEmbed(userStats, user, message)
 
-        return wrapper(user)
+        def getUserStats(jsonObject):
+            return Stats(jsonObject)
+
+        def getEmbed(userStats, user, message):
+            embed = discord.Embed(title="Статистика Warzone",
+                                  colour=discord.Colour.blue()
+                                  )
+            emojiDeath = message.guild.emojis[0]
+            emojiKills = message.guild.emojis[1]
+            emojiKD = message.guild.emojis[2]
+            emojiCountMatches = message.guild.emojis[3]
+            emojiAvgLife = message.guild.emojis[4]
+            emojiCountContr = message.guild.emojis[5]
+            emojiWR = message.guild.emojis[6]
+
+
+            embed.set_author(name=user.fullname)
+            embed.set_thumbnail(url=user.avatar_url)
+            embed.set_footer(text=str(datetime.datetime.now()))
+            embed.add_field(name=f"{emojiCountMatches}Матчей сыграно:", value=userStats.warzone_info.gamesPlayed, inline=False)
+            embed.add_field(name=f"{emojiAvgLife}Среднее время жизни в игре:", value=userStats.warzone_info.avgLife, inline=False)
+            embed.add_field(name=f"{emojiCountContr}Выполнено контрактов:", value=userStats.warzone_info.contracts, inline=False)
+            embed.add_field(name=f"{emojiKills}Убийств:", value=userStats.warzone_info.kills, inline=False)
+            embed.add_field(name=f"{emojiDeath}Смертей:", value=userStats.warzone_info.deaths, inline=False)
+            embed.add_field(name=f"{emojiKD}K/D", value=userStats.warzone_info.kda, inline=False)
+            embed.add_field(name=":first_place:Побед:", value=userStats.warzone_info.wins, inline=False)
+            embed.add_field(name=f"{emojiWR}Процент побед:", value=userStats.warzone_info.wr, inline=False)
+            embed.add_field(name=":slot_machine:Очков в минуту:", value=userStats.warzone_info.scorePerMinute, inline=False)
+            return embed
+
+        return wrapper(user, message)
 
 

@@ -36,8 +36,7 @@ class MyClient(discord.Client):
 
                 if command == '!up':
                     chatMessage = get_statistics(message)
-                    await message.channel.send(chatMessage)  # Отправляем сообшение в канал
-
+                    await message.channel.send(embed=chatMessage)  # Отправляем сообшение в канал
 
 
 
