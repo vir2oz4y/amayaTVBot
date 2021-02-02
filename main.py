@@ -4,24 +4,17 @@ from setting import botToken
 
 
 
-
-
 class MyClient(discord.Client):
     clients = commands.Bot(command_prefix='!')
 
     async def on_ready(self):
-        await client.change_presence(status=discord.Status.idle, activity=discord.Game('Выносит мусор из канала!'))
+        await client.change_presence(status=discord.Status.idle, activity=discord.Game('call of duty: Warzone'))
         print('Logger')
 
     async def on_message(self, message):
         if message.author == client.user:
             return
-        if message.content.startswith('!reg') or message.content.startswith('!up'):
-            mess = self.statistic.start(message)
-            await message.channel.send(embed=mess)
-        else:
-            await message.delete()
-            return
+        print(message.author.id)
 
 
 
