@@ -47,8 +47,11 @@ class DiscordCommands:
         def wrapper(user, message):
             codStat = CodStatistic()
             json = codStat.getUserStatJson(user)
-            userStats = getUserStats(json)
-            return getEmbed(userStats, user, message)
+            try:
+                userStats = getUserStats(json)
+                return getEmbed(userStats, user, message)
+            except:
+                return "Аккаунт введен неверно"
 
         def getUserStats(jsonObject):
             return Stats(jsonObject)
