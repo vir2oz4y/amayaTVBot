@@ -6,7 +6,7 @@ from discordCommands import DiscordCommands
 
 class MyClient(discord.Client):
     clients = commands.Bot(command_prefix='!')
-    myCommands = ['!reg', '!up']
+    myCommands = ['!reg', '!up', '!last']
 
     async def on_ready(self):
         await client.change_presence(status=discord.Status.idle, activity=discord.Game('Call Of Duty: Warzone'))
@@ -21,7 +21,10 @@ class MyClient(discord.Client):
             return DiscordCommands.registration(discordMessage)  # возврашает сообщение о добавлении или изменении данных в БД
 
         def get_statistics(discordMessage):
-            return DiscordCommands.getStatistics(discordMessage)
+            return DiscordCommands.getStatisticsUser(discordMessage)
+
+        def get_last_match(discordMessage):
+            return  DiscordCommands.getStatisticsLastMatch(discordMessage)
 
         if message.channel.name == 'статистика-warzone':  # если канал статистики
             command = message.content.split(' ')[0]  # получили введенную команду
@@ -38,7 +41,9 @@ class MyClient(discord.Client):
                     chatMessage = get_statistics(message)
                     await message.channel.send(embed=chatMessage)  # Отправляем сообшение в канал
 
-
+                if command == '!last':
+                    chatMessage = get_last_match(message)
+                    await message.channel.send(embed=chatMessage)
 
 client = MyClient()
 client.run(botToken)
