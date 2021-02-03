@@ -19,7 +19,31 @@ class CodStatistic:
     def getUserStatJson(self, user):
         return self.getUserStatistics(user).json()
 
+    def getLastMatchStats(self, user):
+        URL = self.userMatchesURL.format(name=user.battleNetName, tracker=user.tracker)
+        response = requests.get(URL)
+        try:
+            return response
+        except:
+            return 404
+
+    def getLastMatchJson(self, user):
+        return self.getLastMatchStats(user).json()['matches'][0]
+
+    def getMatchByID(self, matchId):
+        URL = self.matchURL.format(matchID=matchId)
+        response = requests.get(URL)
+        return response
+
+    def getMatchByIDJson(self, matchId):
+        return self.getMatchByID(matchId).json()
+
+
+
 
 
 if __name__ == '__main__':
-    pass
+    cs = CodStatistic()
+    myUser = User([1, 'vir2oz4y', 2249])
+
+
